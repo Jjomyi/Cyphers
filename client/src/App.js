@@ -5,6 +5,7 @@ import './App.css';
 function App() {
   const [name,setName] = useState('')
   const [result,setResult] = useState('')
+  const [resultt,setResultt] = useState('')
 
   const onChange = (e) => {
     // console.log(e.target.value)
@@ -13,9 +14,26 @@ function App() {
   const onClick = (e) => {
       const URL = 'http://localhost:8080/userinfo'
       axios.get(URL)
-        .then(res => console.log(res.data))
-        .catch(res => console.log(res.data))
+        .then(res => {
+          let found = false
+          for(let a = 0; a<res.data.length; a++) {
+            if(name === res.data[a].name) {
+              setResult(res.data[a].name)
+              setResultt(res.data[a].playId)
+              found = true
+              break;
+            }
+          }
+          if(!found) {
+            alert(`${name}은 없는 닉네임이야`)
+          }
+        }
+        )
   }
+  // 클릭을 했을때 
+  // userinfo 데이터베이스 name에서
+  // name === api 닉네임이 같을때
+  // 출력해준다
   
 
   return (
@@ -31,7 +49,7 @@ function App() {
         />
         <button onClick={onClick}> 검색 </button>
         <div>수집일 : 닉변일</div>
-        <div>{result}</div>
+        <div>{result},{resultt}</div>
       </div>
     </>
   );
