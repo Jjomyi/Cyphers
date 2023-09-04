@@ -7,26 +7,16 @@ function App() {
   const [result,setResult] = useState('')
 
   const onChange = (e) => {
+    // console.log(e.target.value)
     setName(e.target.value)
   }
-
-  // const onClick = () => {
-  //   const URL = `https://api.neople.co.kr/cy/players?nickname=${name}&wordType=<wordType>&apikey=4wU9FwRrSicvhGQV58FiKDPaVyL2gFOV`
-  //     axios.get(URL)
-  //       .then(res => {
-  //         const usernickname = res.data.rows[0]
-  //         setResult(usernickname.nickname)
-  //     }
-  //   )
-  // }
-  // axios.get('http://localhost:8080/')
-  // .then(res => setResult(res.data[0].id))
-
-  // const onClick = () => {
-  //   const URL = 'http://localhost:8080/userinfo'
-  //     axios.get(URL)
-        
-  // }
+  const onClick = (e) => {
+      const URL = 'http://localhost:8080/userinfo'
+      axios.get(URL)
+        .then(res => console.log(res.data))
+        .catch(res => console.log(res.data))
+  }
+  
 
   return (
     <>
