@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   const [name,setName] = useState('')
   const [result,setResult] = useState('')
-  const [resultt,setResultt] = useState('')
+  const [newdata,setNewdata] = useState('')
 
   const onChange = (e) => {
     // console.log(e.target.value)
@@ -16,10 +16,20 @@ function App() {
       axios.get(URL)
         .then(res => {
           let found = false
+          // console.log(res.data[0].createdDate)
+
           for(let a = 0; a<res.data.length; a++) {
             if(name === res.data[a].name) {
               setResult(res.data[a].name)
-              setResultt(res.data[a].playId)
+              const mysqlDate = res.data[a].createdDate
+              const dataobj = new Date(mysqlDate)
+              const year = dataobj.getFullYear()
+              const month = String(dataobj.getMonth() + 1).padStart(2,'0')
+              const day = String(dataobj.getDate()).padStart(2,'0')
+              const formattedDate = `${year}-${month}-${day}`
+              console.log(formattedDate)
+              setNewdata(formattedDate)
+
               found = true
               break;
             }
@@ -30,14 +40,22 @@ function App() {
         }
         )
   }
+  const resetonClick = () => {
+    console.log('초기화')
+    setName('')
+    setResult('')
+    setNewdata('')
+  }
   // 클릭을 했을때 
   // userinfo 데이터베이스 name에서
   // name === api 닉네임이 같을때
   // 출력해준다
-  
+  //수집일 출력하기 9월4일 아직 하는중
 
   return (
     <>
+    <div>별놈돋보기</div>
+    
     <div>닉변이력 검색기</div>
       <div>
         <div>조회결과</div>
@@ -48,8 +66,11 @@ function App() {
         onChange={onChange}
         />
         <button onClick={onClick}> 검색 </button>
-        <div>수집일 : 닉변일</div>
-        <div>{result},{resultt}</div>
+        <button onClick={resetonClick}>초기화</button>
+        <div>닉네임</div>
+        <div>{result}</div>
+        <div>수집일</div>
+        <div>{newdata}</div>
       </div>
     </>
   );
