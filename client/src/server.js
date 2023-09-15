@@ -20,29 +20,118 @@ const con = mysql.createConnection({
   password: DB_PW,
   database: DB_NAME
 })
+// con.connect((err) => {
+//   if(err) {
+//     console.log(err)
+//   }
+//     console.log('DB연결 Connected')
+//   let request = require('request')
+//   let apiRequestRanking = {
+//     'method' : 'GET',
+//     'url': `https://api.neople.co.kr/cy/ranking/ratingpoint?offset=0&limit=1000&apikey=${APIKEY}`
+//   }
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // con.connect((err) => {
-//   if(err) console.log(err)
-//   console.log('Connected')
+//   if(err) {console.log(err)}
+//   console.log('DB 연결 Connected')
 
-//   var request = require('request');
-//   var options = {
-//   'method': 'GET',
-//   'url': 'https://api.neople.co.kr/cy/ranking/ratingpoint?offset=0&limit=1000&apikey=4wU9FwRrSicvhGQV58FiKDPaVyL2gFOV'
-  
+//   let request = require('request')
+//   let options = {
+//     'method': 'GET',
+//     'url': `https://api.neople.co.kr/cy/ranking/ratingpoint?offset=0&limit=1000&apikey=${APIKEY}`
 //   }
+//   request(options,(err,response) => {
+//     if(err) {console.log(err)}
+//      let userinfo = JSON.parse(response.body)
+//      for(let a = 0; a<userinfo.length; a++) {
+//       const playerId = userinfo.rows[a].playerId
+//       const nickname = userinfo.rows[a].nickname
+//       const sqlSelect  = `SELECT * FROM Cyphers.testusers WHERE playid = '${playerId}'`
+
+//       con.query(sqlSelect,(selectErr,rows) => {
+//         if(selectErr) {console.log('SELECT 쿼리 오류',selectErr)}
+//         else if (rows.length === 0) {
+//           const sqlInsert = `INSERT INTO Cyphers.testusers (playid, name) VALUES ('${playerId}', '${nickname}')`;
+
+//           con.query(sqlInsert,(insertErr,insertResult) => {
+//             if(insertErr) {
+//               console.error('INSERT 쿼리 오류:', insertErr);
+//             } else {
+//               console.log(`새로운 레코드 추가: ${playerId}, ${nickname}`);
+//             }
+//           })
+//         }
+//       })
+//      }
+//   })
+
+// })
+
+
+
+
+
+
+
+//   request(options,(err,response) => {
+//     if(err) {console.log(err)}
+//       let userinfo = JSON.parse(response.body)
+//         app.get('/userinfo',(req,res) => {
+//           for(let a = 0; a<)
+//           if()
+//         })
+//   })
+// })
+
+
+
+
+
+
+
 //   request(options,(err,response) => {
 //     if(err) console.log(err)
 //     let data = JSON.parse(response.body)
 //     app.get('/userinfo',(req,res) => {
 //       for(let a = 0; a<1000; a++) {
-//         let playerId = data.rows[a].playerId
-//         let nickname = data.rows[a].nickname
-//         const sql = `INSERT into Cyphers.testusers(playid,name) VALUES('${playerId}','${nickname}')`
-//         console.log(sql)
-//         console.log(data.rows[a].playerId)
-//         console.log(data.rows[a].nickname)
+//         if(data.rows[a].playerId === data.rows[a].playerId) {
+//           const sql = `INSERT into Cyphers.testusers(playid,name) VALUES('${playerId}','${nickname}')`
+
+//         }
+//         // let playerId = data.rows[a].playerId
+//         // let nickname = data.rows[a].nickname
+//         // const sql = `INSERT into Cyphers.testusers(playid,name) VALUES('${playerId}','${nickname}')`
+//         // console.log(sql)
+//         // console.log(data.rows[a].playerId)
+//         // console.log(data.rows[a].nickname)
 //         con.query(sql,(err,result,fields) => {
 //           if(err) console.log(err)
 //           console.log(result)
@@ -81,7 +170,7 @@ const con = mysql.createConnection({
 
   app.get('/userinfo',(req,res) => {
 
-    const sql = "SELECT * FROM Cyphers.testusers;"
+    const sql = "SELECT A.*, B.name AS name2 FROM Cyphers.testusers A JOIN Cyphers.testusers B ON A.playid = B.playid WHERE A.playid = '9b697894cacd8364dbd85251abdab2f2';"
     con.query(sql,(err,result,fileds) => {
       if(err) console.log(err)
     // console.log(result)

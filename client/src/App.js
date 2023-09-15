@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   const [name,setName] = useState('')
-  const [result,setResult] = useState('')
+  const [result,setResult] = useState([])
   const [newdata,setNewdata] = useState('')
 
   const onChange = (e) => {
@@ -16,19 +16,25 @@ function App() {
       axios.get(URL)
         .then(res => {
           let found = false
+          const newResult = []
           // console.log(res.data[0].createdDate)
-
+          // console.log(res.data[0].playid)
           for(let a = 0; a<res.data.length; a++) {
-            if(name === res.data[a].name) {
-              setResult(res.data[a].name)
-              const mysqlDate = res.data[a].createdDate
-              const dataobj = new Date(mysqlDate)
-              const year = dataobj.getFullYear()
-              const month = String(dataobj.getMonth() + 1).padStart(2,'0')
-              const day = String(dataobj.getDate()).padStart(2,'0')
-              const formattedDate = `${year}-${month}-${day}`
-              console.log(formattedDate)
-              setNewdata(formattedDate)
+            if(name === res.data[a].playid) {
+              console.log(res.data[a].name)
+              console.log(res.data[a].name2)
+              newResult.push(res.data[a].name)
+              newResult.push(res.data[a].name2)
+              // setResult(res.data[a].name)
+              // setResult(res.data[a].name2)
+              // const mysqlDate = res.data[a].createdDate
+              // const dataobj = new Date(mysqlDate)
+              // const year = dataobj.getFullYear()
+              // const month = String(dataobj.getMonth() + 1).padStart(2,'0')
+              // const day = String(dataobj.getDate()).padStart(2,'0')
+              // const formattedDate = `${year}-${month}-${day}`
+              // console.log(formattedDate)
+              // setNewdata(formattedDate)
 
               found = true
               break;
@@ -37,13 +43,14 @@ function App() {
           if(!found) {
             alert(`${name}은 없는 닉네임이야`)
           }
+          setResult(newResult)
         }
         )
   }
   const resetonClick = () => {
     console.log('초기화')
     setName('')
-    setResult('')
+    setResult([])
     setNewdata('')
   }
   // 클릭을 했을때 
@@ -68,7 +75,13 @@ function App() {
         <button onClick={onClick}> 검색 </button>
         <button onClick={resetonClick}>초기화</button>
         <div>닉네임</div>
-        <div>{result}</div>
+        {/* <div>{result.map((result) => (
+          <li key = {result.playid}>{result.name}</li>
+        ))}</div> */}
+        {/* <div>{result}</div> */}
+        {result.map((name,index) => (
+          <div key = {index}>{name}</div>
+        ))}
         <div>수집일</div>
         <div>{newdata}</div>
       </div>
