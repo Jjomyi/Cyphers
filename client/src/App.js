@@ -43,7 +43,8 @@ function App() {
           if(!found) {
             alert(`${name}은 없는 닉네임이야`)
           }
-          setResult(newResult)
+          console.log(newResult)
+          // setResult(newResult)
         }
         )
   }
@@ -79,9 +80,9 @@ function App() {
           <li key = {result.playid}>{result.name}</li>
         ))}</div> */}
         {/* <div>{result}</div> */}
-        {result.map((name,index) => (
+        {/* {result.map((name,index) => (
           <div key = {index}>{name}</div>
-        ))}
+        ))} */}
         <div>수집일</div>
         <div>{newdata}</div>
       </div>
