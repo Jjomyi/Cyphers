@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios'
+import dayjs from 'dayjs'
 import './App.css';
 
 function App() {
@@ -10,11 +11,23 @@ function App() {
     setName(e.target.value)
   }
 
-  // 1. 개선점 => name을 api에 넘겨줘야함 (query params를 써서)
+  const formatDate = (date) => {
+    return dayjs(date).format('YYYY-MM-DD')
+  }
+
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/username?name=${name}`)
-      setResult(response.data)
+      if(response.data && response.data.length > 0) {
+        const formattedData = response.data.map(item => ({
+          ...item,
+          createdDate: formatDate(item.createdDate)
+        }))
+        setResult(formattedData);
+        setName('')
+      } else {
+        alert(`${name}은 없는 닉네임입니다.`)
+      }
     }
     catch(error) {
       console.log('데이터를 가져오는 중 에러 발생 : ',error)
@@ -22,6 +35,15 @@ function App() {
   }
   const onClick = () => {
     fetchData()
+  }
+  const handleKeyPress = e => {
+    if(e.key === 'Enter') {
+      onClick()
+    }
+  }
+  const resetonClick = () => {
+    setName('')
+    setResult([])
   }
   return(
     <>
@@ -33,11 +55,13 @@ function App() {
         placeholder='예전 닉 검색 가능'
         value={name}
         onChange={onChange}
+        onKeyPress={handleKeyPress}
       />
       <button onClick={onClick}>검색</button>
+      <button onClick={resetonClick}>초기화</button>
       <div>닉네임</div>
       <div>{result.map((item => 
-      <div key={item.playid}>
+      <div key={item.id}>
         <div>{item.name}</div>
         <div>{item.createdDate}</div>
       </div>

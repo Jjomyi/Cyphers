@@ -27,7 +27,6 @@ con.connect((err) => {
       console.log(err)
     }
     console.log('DB연결 Connected')
-    processUserData()
 });
 
  const MAX_LIMIT = 1000;
@@ -90,58 +89,41 @@ con.connect((err) => {
                 }
             })
         }
+        if (totalData.length === 0) {
+            console.log('추가할 데이터가 없습니다.');
+        }
     } catch (error) {
         console.error('데이터를 가져오는 중 에러 발생:', error);
     }
 };
 
-//1. 개선점 fe에서 넘겨 받은 name을 받아서 쿼리에 변수로 넘겨받아야함 (박현백을 변수로 대체해보셈)
-// app.get('/userinfo',(req, res) => {
-//     const selectQuery =  `
-//         SELECT *
-//         FROM Cyphers.testusers2
-//         WHERE name = ${name}
-//         UNION
-//         SELECT *
-//         FROM Cyphers.testusers2
-//         WHERE playid IN (
-//             SELECT playid
-//             FROM Cyphers.testusers2
-//             WHERE name = "박현백"
-//         );
-//     `;
-//     con.query(selectQuery,(err,result) => {
-//         if(err) {
-//             console.log(err)
-//         }
-//         res.send(result)
-//         //백엔드에서 해야된다
-//     })
-// })
+cron.schedule('0 11 * * *', () => {
+    console.log('매일 오전 11시에 데이터를 업데이트합니다.')
+    processUserData()
+})
 
-// app.get('/api/username',(req,res) => {
-//     const name = req.query.name
-//         const selectQuery =  `
-//         SELECT *
-//         FROM Cyphers.testusers2
-//         WHERE name = "${name}"
-//         UNION
-//         SELECT *
-//         FROM Cyphers.testusers2
-//         WHERE playid IN (
-//             SELECT playid
-//             FROM Cyphers.testusers2
-//             WHERE name = "${name}"
-//         );
-//     `;
-//     // const selectNameQuery = "SELECT playid , name FROM Cyphers.testusers2 WHERE name = ?"
-//     con.query(selectQuery,[name],(err,result) => {
-//         if(err) {
-//             console.log(err)
-//         }
-//         res.send(result)
-//     })
-// })
+app.get('/api/username',(req,res) => {
+    const {name} = req.query
+        const selectQuery =  `
+        SELECT *
+        FROM Cyphers.testusers2
+        WHERE name = "${name}"
+        UNION
+        SELECT *
+        FROM Cyphers.testusers2
+        WHERE playid IN (
+            SELECT playid
+            FROM Cyphers.testusers2
+            WHERE name = "${name}"
+        );
+    `;
+    con.query(selectQuery,(err,result) => {
+        if(err) {
+            console.log(err)
+        }
+        res.send(result)
+    })
+})
 
 server.listen(8080, () => {
     console.log('server is running on 8080');
