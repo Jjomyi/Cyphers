@@ -68,14 +68,14 @@ con.connect((err) => {
             let playerId = totalData[a].playerId;
             let nickname = totalData[a].nickname;
 
-            const checkDuplicateQuery = `SELECT * FROM Cyphers.testusers2 WHERE playid = '${playerId}' AND name = '${nickname}'`;
+            const checkDuplicateQuery = `SELECT * FROM Cyphers.users WHERE playid = '${playerId}' AND name = '${nickname}'`;
 
             con.query(checkDuplicateQuery,(err,rows) => {
                 if(err) {
                     console.log(err)
                 } else {
                     if(rows.length === 0) {
-                        const insertQuery = `INSERT INTO Cyphers.testusers2 (playid, name, createdDate) VALUES ('${playerId}', '${nickname}', NOW())`;
+                        const insertQuery = `INSERT INTO Cyphers.users (playid, name, createdDate) VALUES ('${playerId}', '${nickname}', NOW())`;
                         
                         con.query(insertQuery,(err,result) => {
                             if(err) {
@@ -106,14 +106,14 @@ app.get('/api/username',(req,res) => {
     const {name} = req.query
         const selectQuery =  `
         SELECT *
-        FROM Cyphers.testusers2
+        FROM Cyphers.users
         WHERE name = "${name}"
         UNION
         SELECT *
-        FROM Cyphers.testusers2
+        FROM Cyphers.users
         WHERE playid IN (
             SELECT playid
-            FROM Cyphers.testusers2
+            FROM Cyphers.users
             WHERE name = "${name}"
         );
     `;

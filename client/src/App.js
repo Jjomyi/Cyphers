@@ -1,8 +1,38 @@
 import { useState } from 'react';
+import {Router,Link} from 'react-router-dom';
 import axios from 'axios'
 import dayjs from 'dayjs'
+import styled from 'styled-components'
 import './App.css';
 
+//스타일드 컴포넌트
+const HeaderWrapper = styled.header`
+    display: flex;
+    justify-content: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 16px;
+  `
+const Logo = styled.div`
+font-size: 24px;
+font-weight: bold;
+margin-right: 20px;
+`;
+const Navigation = styled.nav`
+  display: flex;
+  align-items: center;
+`;
+
+const NavItem = styled.a`
+  color: #fff;
+  text-decoration: none;
+  margin-right: 20px;
+  font-size: 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 function App() {
   const [name,setName] = useState('')
   const [result,setResult] = useState([])
@@ -45,9 +75,19 @@ function App() {
     setName('')
     setResult([])
   }
+
   return(
     <>
-    <div>닉변이력 검색기</div>
+    <HeaderWrapper>
+      <NavItem><Link to = "/">홈</Link></NavItem>
+      <NavItem><Link to = "/324324">1</Link></NavItem>
+      <NavItem><Link to = "/3515">2</Link></NavItem>
+      <NavItem href='/'>별놈돋보기</NavItem>
+      <Navigation>
+        <NavItem href='/'>홈</NavItem>
+        <NavItem href='/nickname'>닉변이력</NavItem>
+      </Navigation>
+    </HeaderWrapper>
     <div>
       <div>조회결과</div>
       <input
