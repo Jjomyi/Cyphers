@@ -1,6 +1,6 @@
 import {Routes,Route,Link} from 'react-router-dom';
-import Userhistory from './Userhistory'
-import Main from './Main';
+import Userhistory from '../Main/Userhistory'
+import Main from '../Main/Main';
 import styled from 'styled-components'
 import './App.css';
 

@@ -100,7 +100,7 @@ con.connect((err) => {
 cron.schedule('0 11 * * *', () => {
     console.log('매일 오전 11시에 데이터를 업데이트합니다.')
     processUserData()
-})
+ㅍ})
 
 app.get('/api/username',(req,res) => {
     const {name} = req.query
