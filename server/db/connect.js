@@ -10,7 +10,7 @@ const con = mysql.createConnection({
   host: DB_HOST,
   user: DB_USER,
   password: DB_PW,
-  database: DB_NAME
+  database: DB_NAME,
 });
 
 con.connect((err) => {

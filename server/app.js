@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 // CORS 사용
 app.use(cors());
 
-app.use('/api', userRoutes);
+app.use('/user', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`서버 실행 포트 : ${PORT}`);

@@ -1,27 +1,19 @@
 const userModel = require('../models/userModel');
-const userService = require('../services/userService');
+const userService = require('../services/user/userPlayerInfo');
 
-const getUserName = async (req, res) => {
-  const { name } = req.query;
-  const result = await userModel.getuserName(name);
-
-  res.send(result);
-};
-
-const syncUser = async (req, res) => {
+const getUserMatch = async (req, res) => {
   try {
-    await userService.processUserData();
-
-    res.send('success');
-  } catch (e) {
-    res.send(e);
-    res.status(500);
+    const name = req.query.name;
+    const userMatch = await userService.userMatchesAPI(name);
+    res.send(userMatch);
+  } catch (error) {
+    console.error('Error fetching user match history:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-const userController = {
-  syncUser,
-  getUserName,
+const usercontroller = {
+  getUserMatch,
 };
 
-module.exports = userController;
+module.exports = usercontroller;
