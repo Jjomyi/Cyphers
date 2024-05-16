@@ -25,13 +25,13 @@ function App() {
     <>
       <HeaderWrapper>
         <StyledLink to="/">사이퍼즈</StyledLink>
-        <StyledLink to="/history/nicknameHistory">닉변검색</StyledLink>
         <StyledLink to="/user/userinfo">유저검색</StyledLink>
+        <StyledLink to="/history/nicknameHistory">닉변검색</StyledLink>
       </HeaderWrapper>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/history/nicknameHistory" element={<Userhistory />} />
         <Route path="/user/userinfo" element={<Userplayinfo />} />
+        <Route path="/history/nicknameHistory" element={<Userhistory />} />
       </Routes>
     </>
   );

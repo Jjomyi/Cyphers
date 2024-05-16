@@ -1,13 +1,24 @@
 const con = require('../db/connect');
 
-const getuserPlayid = (name) => {
+const checkDuplicateUser = (playerId, nickname) => {
   return new Promise((resolve, reject) => {
-    const playIdSelectQuery = `
-    SELECT playid
-    FROM Cyphers.users
-    WHERE name = '${name}'
-    `;
-    con.query(playIdSelectQuery, (err, result) => {
+    const checkDuplicateQuery = `SELECT * FROM Cyphers.users WHERE playid = '${playerId}' AND name = '${nickname}'`;
+
+    con.query(checkDuplicateQuery, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};
+
+const insertUser = (playerId, nickname) => {
+  return new Promise((resolve, reject) => {
+    const insertQuery = `INSERT INTO Cyphers.users (playid, name, createdDate) VALUES ('${playerId}', '${nickname}', NOW())`;
+
+    con.query(insertQuery, (err, result) => {
       if (err) {
         reject(err);
       } else {
@@ -18,7 +29,8 @@ const getuserPlayid = (name) => {
 };
 
 const userModel = {
-  getuserPlayid,
+  checkDuplicateUser,
+  insertUser,
 };
 
 module.exports = userModel;
