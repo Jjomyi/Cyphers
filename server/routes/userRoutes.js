@@ -2,6 +2,6 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-router.get('/get-user-ranking-sync', userController.get_userRankingHistorySync);
+router.get('/getuserRanking', userController.getuserRanking);
 
 module.exports = router;

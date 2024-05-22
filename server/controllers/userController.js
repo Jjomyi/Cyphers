@@ -1,18 +1,16 @@
-const userHistorySync = require('../services/user/userHistorySync');
+const userRankingHistorySync = require('../services/user/userRankingHistorySync');
 
-const get_userRankingHistorySync = async (req, res) => {
+const getuserRanking = async (req, res) => {
   try {
-    const response = await userHistorySync.featch();
-    const data = response;
-    res.send(data);
+    const response = await userRankingHistorySync.rankingsyncData();
+    res.send(response);
   } catch (e) {
     res.send(e);
-    console.log(e);
   }
 };
 
 const userController = {
-  get_userRankingHistorySync,
+  getuserRanking,
 };
 
 module.exports = userController;

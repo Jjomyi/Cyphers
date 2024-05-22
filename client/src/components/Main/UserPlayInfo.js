@@ -1,19 +1,127 @@
-import React from 'react';
-import { useState } from 'react';
+// import React from 'react';
+// import { useState } from 'react';
+// import axios from 'axios';
+
+// const Userplayinfo = () => {
+//   const [name, setName] = useState('');
+//   const [result, setResult] = useState([]);
+//   const totalRecords = calculateTotalRecords({
+//     winCount: result.records?.[0].winCount,
+//     stopCount: result.records?.[0].stopCount,
+//     loseCount: result.records?.[0].loseCount,
+//   });
+
+//   const onChange = (e) => {
+//     setName(e.target.value);
+//   };
+//   const handleKeyPress = (e) => {
+//     if (e.key === 'Enter') {
+//       onClick();
+//     }
+//   };
+
+//   const playid = async () => {
+//     try {
+//       const response = await axios.get(
+//         `http://localhost:8080/user/user?nickname=${name}`
+//       );
+
+//       // const rows = response.data.matches.rows;
+//       // rows.push(response.data);
+//       // for (let a = 0; a < rows.length; a++) {
+//       //   let 승패정보 = rows[a].playInfo.result;
+
+//       //   // 승패정보 한글화
+//       //   if (승패정보 === 'win') {
+//       //     승패정보 = '승리';
+//       //   } else if (승패정보 === 'lose') {
+//       //     승패정보 = '패배';
+//       //   }
+
+//       //   console.log(승패정보);
+//       // }
+
+//       setResult(response.data);
+//     } catch (error) {
+//       console.log('데이터 가져오는 중 에러 발생 : ', error);
+//     }
+//   };
+
+//   const onClick = () => {
+//     playid();
+//   };
+
+//   return (
+//     <>
+//       <div>공식전 랭킹</div>
+//       <div>유저 정보 검색 하는 곳</div>
+//       <input
+//         type="text"
+//         value={name}
+//         onChange={onChange}
+//         onKeyPress={handleKeyPress}
+//       />
+//       <button onClick={onClick}>검색</button>
+//       <div>결과창</div>
+//       {result.records && result.records.length > 0 && (
+//         <div>
+//           <div>닉네임 : {result.nickname}</div>
+//           <div>급수 : {result.grade}</div>
+//           <div>클랜 : {result.clanName}</div>
+//           <div>랭크 : {result.tierName}</div>
+//           <span>티어점수 : {result.ratingPoint}</span>
+//           <span>최고 티어점수 :{result.maxRatingPoint}</span>
+//           <div>
+//             <span>
+//               {`승률: ${calculateWinRate({
+//                 totalRecords,
+//                 winCount: result.records[0].winCount,
+//                 stopCount: result.records[0].stopCount,
+//               })}% `}
+//             </span>
+//             <span>{totalRecords}전</span>
+//             <span>{result.records[0].winCount}승</span>
+//             <span>{result.records[0].loseCount}패</span>
+//             <span>{result.records[0].stopCount}중단</span>
+//           </div>
+//           <ul>
+//             {/* console.log(response.data.matches.rows[0].playInfo.result); */}
+//             {result.matches.rows.map((match, index) => (
+//               <li key={index}>
+//                 최근게임 : {match.playInfo.result}
+//                 {/* 매치에 관련된 다른 정보도 표시할 수 있습니다. */}
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+// const calculateTotalRecords = ({ winCount, loseCount, stopCount }) =>
+//   winCount + loseCount + stopCount;
+
+// const calculateWinRate = ({ totalRecords, winCount, stopCount }) => {
+//   const resultotalRecords = totalRecords - stopCount;
+//   const winRate = winCount / resultotalRecords;
+
+//   return Math.round(winRate * 100);
+// };
+
+// export default Userplayinfo;
+
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const Userplayinfo = () => {
   const [name, setName] = useState('');
-  const [result, setResult] = useState([]);
-  const totalRecords = calculateTotalRecords({
-    winCount: result.records?.[0].winCount,
-    stopCount: result.records?.[0].stopCount,
-    loseCount: result.records?.[0].loseCount,
-  });
+  const [result, setResult] = useState(null);
 
   const onChange = (e) => {
     setName(e.target.value);
   };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       onClick();
@@ -23,9 +131,24 @@ const Userplayinfo = () => {
   const playid = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/cy/players/matches?nickname=${name}`
+        `http://localhost:8080/user/user?nickname=${name}`
       );
-      console.log(response.data);
+
+      const rows = response.data.matches.rows;
+
+      for (let a = 0; a < rows.length; a++) {
+        let 승패정보 = rows[a].playInfo.result;
+
+        // 승패정보 한글화
+        if (승패정보 === 'win') {
+          승패정보 = '승리';
+        } else if (승패정보 === 'lose') {
+          승패정보 = '패배';
+        }
+
+        rows[a].playInfo.result = 승패정보;
+      }
+
       setResult(response.data);
     } catch (error) {
       console.log('데이터 가져오는 중 에러 발생 : ', error);
@@ -35,6 +158,23 @@ const Userplayinfo = () => {
   const onClick = () => {
     playid();
   };
+
+  const calculateTotalRecords = ({ winCount, loseCount, stopCount }) =>
+    winCount + loseCount + stopCount;
+
+  const calculateWinRate = ({ totalRecords, winCount, stopCount }) => {
+    const resultotalRecords = totalRecords - stopCount;
+    const winRate = winCount / resultotalRecords;
+    return Math.round(winRate * 100);
+  };
+
+  const totalRecords = result
+    ? calculateTotalRecords({
+        winCount: result.records?.[0].winCount,
+        stopCount: result.records?.[0].stopCount,
+        loseCount: result.records?.[0].loseCount,
+      })
+    : 0;
 
   return (
     <>
@@ -48,14 +188,14 @@ const Userplayinfo = () => {
       />
       <button onClick={onClick}>검색</button>
       <div>결과창</div>
-      {result.records && result.records.length > 0 && (
+      {result && result.records && result.records.length > 0 && (
         <div>
           <div>닉네임 : {result.nickname}</div>
           <div>급수 : {result.grade}</div>
           <div>클랜 : {result.clanName}</div>
           <div>랭크 : {result.tierName}</div>
           <span>티어점수 : {result.ratingPoint}</span>
-          <span>최고 티어점수 :{result.maxRatingPoint}</span>
+          <span>최고 티어점수 : {result.maxRatingPoint}</span>
           <div>
             <span>
               {`승률: ${calculateWinRate({
@@ -70,28 +210,14 @@ const Userplayinfo = () => {
             <span>{result.records[0].stopCount}중단</span>
           </div>
           <ul>
-            {/* console.log(response.data.matches.rows[0].playInfo.result); */}
             {result.matches.rows.map((match, index) => (
-              <li key={index}>
-                최근게임 : {match.playInfo.result}
-                {/* 매치에 관련된 다른 정보도 표시할 수 있습니다. */}
-              </li>
+              <li key={index}>최근게임 : {match.playInfo.result}</li>
             ))}
           </ul>
         </div>
       )}
     </>
   );
-};
-
-const calculateTotalRecords = ({ winCount, loseCount, stopCount }) =>
-  winCount + loseCount + stopCount;
-
-const calculateWinRate = ({ totalRecords, winCount, stopCount }) => {
-  const resultotalRecords = totalRecords - stopCount;
-  const winRate = winCount / resultotalRecords;
-
-  return Math.round(winRate * 100);
 };
 
 export default Userplayinfo;

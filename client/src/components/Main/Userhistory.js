@@ -18,7 +18,7 @@ const Userhistory = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/user/userHistory?name=${name}`
+        `http://localhost:8080/user/username?name=${name}`
       );
       if (response.data && response.data.length > 0) {
         const formattedData = response.data.map((item) => ({
