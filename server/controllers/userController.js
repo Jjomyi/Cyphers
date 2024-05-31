@@ -1,5 +1,6 @@
 const userRankingHistorySync = require('../services/user/userRankingHistorySync');
 const userNicknameHistory = require('../services/user/userNicknameHistory');
+const userMatches = require('../services/user/userMatches');
 
 const getuserRanking = async (req, res) => {
   try {
@@ -11,19 +12,29 @@ const getuserRanking = async (req, res) => {
 };
 
 const getuserNicknameHistory = async (req, res) => {
-  // nickname 이건 서비스에서 해야 하는 것 아닌지 (서비스에서 하면 될꺼 같은데?) 컨트롤러에서는 보여주기만 하고
   const { nickname } = req.query;
   try {
     const response = await userNicknameHistory.nicknameHistory(nickname);
     res.send(response);
   } catch (e) {
-    console.log(e);
+    res.send(e);
+  }
+};
+
+const getuserMatches = async (req, res) => {
+  const { nickname } = req.query;
+  try {
+    const response = await userMatches.matchesAPI(nickname);
+    res.send(response);
+  } catch (e) {
+    res.send(e);
   }
 };
 
 const userController = {
   getuserRanking,
   getuserNicknameHistory,
+  getuserMatches,
 };
 
 module.exports = userController;
