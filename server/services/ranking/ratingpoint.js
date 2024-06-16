@@ -1,3 +1,4 @@
+// 공식전 랭킹 조회
 const axios = require('axios');
 const userModel = require('../../models/userModel');
 const APIKEY = process.env.API_KEY;
@@ -57,8 +58,8 @@ const rankingsyncData = async (offset = 0, limit = 1000) => {
   }
 };
 
-const userRankingHistorySync = {
+const ratingpoint = {
   rankingsyncData,
 };
 
-module.exports = userRankingHistorySync;
+module.exports = ratingpoint;

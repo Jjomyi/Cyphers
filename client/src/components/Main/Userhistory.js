@@ -18,13 +18,18 @@ const Userhistory = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/user/username?name=${name}`
+        `http://localhost:8080/user/nicknameHistory?nickname=${name}`
       );
       if (response.data && response.data.length > 0) {
-        const formattedData = response.data.map((item) => ({
-          ...item,
-          createdDate: formatDate(item.createdDate),
-        }));
+        const formattedData = response.data
+          .map((item) => ({
+            ...item,
+            createdDate: formatDate(item.createdDate),
+          }))
+          .sort((a, b) =>
+            dayjs(a.createdDate).isBefore(dayjs(b.createdDate)) ? 1 : -1
+          );
+        console.log(response.data);
         setResult(formattedData);
         setName('');
       } else {
@@ -60,11 +65,14 @@ const Userhistory = () => {
       <button onClick={resetonClick}>초기화</button>
       {
         <>
-          <div>닉네임</div>
+          <div>
+            <span>수집일</span>
+            <span>닉네임</span>
+          </div>
           {result.map((item) => (
             <div key={item.id}>
-              <div>{item.name}</div>
-              <div>{item.createdDate}</div>
+              <span>{item.createdDate}</span>
+              <span>{item.name}</span>
             </div>
           ))}
         </>

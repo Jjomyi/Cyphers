@@ -1,22 +1,28 @@
 const con = require('../db/connect');
 
 // 이건 Promise 가 아닌 axios로 바꿀순 없나? 나중에 찾아보기
-const getuserName = (name) => {
+const getuserName = (playerId) => {
   return new Promise((resolve, reject) => {
-    const selectQuery = `
-      SELECT *
-      FROM Cyphers.users
-      WHERE name = "${name}"
-      UNION
-      SELECT *
-      FROM Cyphers.users
-      WHERE playid IN (
-          SELECT playid
-          FROM Cyphers.users
-          WHERE name = "${name}"
-      );
-  `;
-    con.query(selectQuery, (err, result) => {
+    // const selectQuery = `
+    //     SELECT *
+    //     FROM Cyphers.users
+    //     WHERE name = "${name}"
+    //     UNION
+    //     SELECT *
+    //     FROM Cyphers.users
+    //     WHERE playid IN (
+    //         SELECT playid
+    //         FROM Cyphers.users
+    //         WHERE name = "${name}"
+    //     );
+    // `;
+    const query = `
+        SELECT *
+        FROM Cyphers.users
+        WHERE playid = "${playerId}"
+      `;
+    console.log(query);
+    con.query(query, (err, result) => {
       if (err) {
         reject(err);
       } else {
